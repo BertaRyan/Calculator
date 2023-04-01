@@ -5,75 +5,118 @@ let operator = ""
 
 
 
-function add(x, y) {
-    return x + y;
+function add(firstNum, secondNum) {
+    return firstNum += secondNum
+
+
 }
 
-function subtract(x, y) {
-    return x - y
+function subtract(firstNum, secondNum) {
+    return firstNum -= secondNum
+
+
 }
 
-function multiply(x, y) {
-    return x * y
+function multiply(firstNum, secondNum) {
+    return firstNum *= secondNum
+
+
 }
 
-function divide(x, y) {
-    return x / y
+function divide(firstNum, secondNum) {
+    return firstNum /= secondNum
+
+
 }
+
+
+
+
 let clear = document.querySelector('.clear')
 let display = document.querySelector('.display')
 let numbers = document.querySelectorAll('.numbers')
 let operators = document.querySelectorAll('.operator')
-let equal = document.querySelector('equal')
+let equal = document.querySelector('.equal')
 
 
 
 clear.addEventListener('click', function () {
     display.textContent = ""
+    firstNum = ""
+    secondNum = ""
 })
 
 
+equal.addEventListener("click", function () {
+    calculate();
 
+    display.textContent = firstNum
+})
 
 numbers.forEach(number => {
     number.addEventListener('click', function (e) {
-        handleNum(number.textContent)
+        handleNum(e.target.textContent)
+        display.textContent = firstNum
     })
 })
 
-operators.forEach(operator => {
-    operator.addEventListener('click', function () {
-        display.append(operator.innerHTML)
-    })
-})
+operators.forEach((op) => op.addEventListener('click', function (e) {
+    operate(e.target.textContent)
+    display.textContent = firstNum + "" + operator;
+    secondNum.textContent = firstNum
+}));
+
+
+
 
 
 function handleNum(num) {
 
-}
-
-
-
-function operate(x, y) {
-    if (operators.innerHTML == "+") {
-        add(x, y);
-    } else if (operators.innerHTML == "-") {
-        subtract(x, y)
-    } else if (operators.innerHTML == "x") {
-        multiply(x, y)
-    } else {
-        divide(x, y)
+    if (firstNum.length <= 6) {
+        firstNum += num;
     }
 }
 
-// equal.addEventListener("click", function(){
-//    return operate()
-// })
 
+
+function operate(op) {
+    operator = op;
+    secondNum = firstNum;
+    firstNum = "";
+}
 
 
 function calculate() {
 
+    firstNum = Number(firstNum);
+    secondNum = Number(secondNum);
+
+
+    if (operator === "+") {
+        add(firstNum.textContent, secondNum.textContent)
+
+    } else if (operator === "x") {
+        multiply()
+
+    } else if (operator === "/") {
+        divide()
+
+    } else if (operator === "-") {
+        subtract()
+
+    }
+
+    console.log(firstNum)
+
+    secondNum = roundNumber(secondNum)
+    secondNum = secondNum.toString();
+    firstNum = firstNum.toString()
+
+
+}
+
+function roundNumber(num) {
+    return Math.round(num * 1000) / 1000;
 }
 
 
